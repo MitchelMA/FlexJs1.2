@@ -1,6 +1,8 @@
 var Canvas = document.getElementById("VCan");
 var ctx = Canvas.getContext("2d");
 
+var end = false;
+
 var myShip = new Ship();
 
 var AsteroidList = [
@@ -30,6 +32,13 @@ function draw(time) {
 
   for (let i = 0; i < AsteroidList.length; i++) {
     if (myShip.colission(AsteroidList[i])) {
+      if (myShip.InvincibilityTimeout >= 899) {
+        myShip.InvincibilityTimeout = -1;
+        myShip.score--;
+        if (myShip.score <= -1) {
+          lose();
+        }
+      }
       let shipVelSnap = new Vector(myShip.velocity.x, myShip.velocity.y);
       let AstVelSnap = new Vector(
         AsteroidList[i].velocity.x,
@@ -40,13 +49,22 @@ function draw(time) {
       AsteroidList[i].velocity.add(shipVelSnap);
       myShip.velocity.sub(AstVelSnap);
     }
-    console.log(myShip.colission(AsteroidList[i]));
   }
 
   for (let i = 0; i < AsteroidList.length; i++) {
+    ctx.fillStyle = "rgb(100, 100, 100)";
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 5;
+    ctx.lineJoin = "round";
+    ctx.lineCap = "square";
     AsteroidList[i].show();
     AsteroidList[i].update();
     if (AsteroidList[i].size < 10) {
+      AsteroidList.splice(i, 1);
+      myShip.score += 0.5;
+      if (myShip.score >= 25) {
+        win();
+      }
       // randomly create a new Asteroid when one gets broken.
       if (0.7 < Math.random() && AsteroidList.length < 10) {
         AsteroidList.push(
@@ -61,7 +79,6 @@ function draw(time) {
           )
         );
       }
-      AsteroidList.splice(i, 1);
     }
   }
 
@@ -70,7 +87,6 @@ function draw(time) {
     myShip.laserArray[i].show();
     try {
       for (let j = 0; j < AsteroidList.length; j++) {
-        console.log(myShip.laserArray[i].colission(AsteroidList[j]));
         if (myShip.laserArray[i].colission(AsteroidList[j])) {
           myShip.laserArray[i].velocity.mult(0.1);
           AsteroidList[j].velocity.add(myShip.laserArray[i].velocity);
@@ -113,15 +129,15 @@ function draw(time) {
   }
 
   ctx.font = "16px Arial";
-  ctx.fillText(myShip.velocity.mag().toFixed(2), 10, 20);
+  ctx.fillText("snelheid: " + myShip.velocity.mag().toFixed(2), 10, 20);
   ctx.fillText(
-    ((myShip.velocity.heading() * 180) / Math.PI).toFixed(2),
+    "richting: " + ((myShip.velocity.heading() * 180) / Math.PI).toFixed(2),
     10,
     50
   );
-  ctx.fillText(fps.toFixed(2), 10, 80);
+  ctx.fillText("score: " + myShip.score, 10, 80);
   oldT = time;
-  window.requestAnimationFrame(draw);
+  if (!end) window.requestAnimationFrame(draw);
 }
 
 setup();
@@ -160,4 +176,39 @@ function AngleToVector(radians) {
   let y = Math.sin(radians);
 
   return new Vector(x, y);
+}
+
+function win() {
+  end = true;
+  setTimeout(() => {
+    ctx.fillStyle = "rgb(240, 240, 240)";
+    ctx.fillRect(0, 0, Canvas.width, Canvas.height);
+    ctx.font = "32px Arial";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("Je hebt gewonnen!", Canvas.width / 2, Canvas.height / 2 - 90);
+    ctx.fillText(
+      `Jouw score: ${myShip.score}`,
+      Canvas.width / 2,
+      Canvas.height / 2
+    );
+  }, 300);
+}
+
+function lose() {
+  end = true;
+  setTimeout(() => {
+    ctx.fillStyle = "rgb(240, 240, 240)";
+    ctx.fillRect(0, 0, Canvas.width, Canvas.height);
+    ctx.font = "32px Arial";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(
+      "Helaas, je hebt verloren!",
+      Canvas.width / 2,
+      Canvas.height / 2
+    );
+  }, 500);
 }

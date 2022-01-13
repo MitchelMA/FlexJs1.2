@@ -9,6 +9,8 @@ class Ship extends MoveAble {
   ) {
     super(rotation, rotationSpeed, topSpeed, maxAccMag, velocity, position, 0);
     this.laserArray = new Array();
+    this.score = 0;
+    this.InvincibilityTimeout = 400;
   }
 
   showMag = function () {
@@ -24,6 +26,9 @@ class Ship extends MoveAble {
   };
 
   show = function () {
+    if (this.InvincibilityTimeout < 900) {
+      this.InvincibilityTimeout += deltaT;
+    }
     function shipShape(x, y, size) {
       ctx.beginPath();
       ctx.moveTo(x + size / 2, y);
@@ -56,6 +61,7 @@ class Ship extends MoveAble {
       Math.pow(this.position.x - asteroid.position.x, 2) +
         Math.pow(this.position.y - asteroid.position.y, 2)
     );
+
     return dist < asteroid.size;
   };
 }
