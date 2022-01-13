@@ -18,9 +18,17 @@ function draw(time) {
   ctx.fillRect(0, 0, Canvas.width, Canvas.height);
 
   ctx.fillStyle = "black";
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 1;
   myShip.show();
   myShip.showMag();
   myShip.update();
+
+  for (let i = 0; i < myShip.laserArray.length; i++) {
+    myShip.laserArray[i].update();
+    myShip.laserArray[i].show();
+    if (myShip.laserArray[i].age > Laser.maxAge) myShip.laserArray.splice(i, 1);
+  }
 
   ctx.font = "16px Arial";
   ctx.fillText(myShip.velocity.mag().toFixed(2), 10, 20);
@@ -59,4 +67,15 @@ document.addEventListener("keyup", (e) => {
   } else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
     myShip.inVector.x = 0;
   }
+  if (e.key === " ") {
+    myShip.shoot();
+  }
 });
+
+// extra functies
+function AngleToVector(radians) {
+  let x = Math.cos(radians);
+  let y = Math.sin(radians);
+
+  return new Vector(x, y);
+}

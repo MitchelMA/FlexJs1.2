@@ -1,5 +1,12 @@
 class MoveAble {
-  constructor(rotation, rotationSpeed, topSpeed, maxAccMag, velocity) {
+  constructor(
+    rotation,
+    rotationSpeed,
+    topSpeed,
+    maxAccMag,
+    velocity,
+    position
+  ) {
     this.rotation = rotation;
     this.rotationSpeed = rotationSpeed;
     this.topSpeed = topSpeed;
@@ -7,7 +14,8 @@ class MoveAble {
     this.inVector = new Vector(0, 0);
     this.acceleration = new Vector(0, 0);
     this.velocity = velocity;
-    this.position = new Vector(Canvas.width / 2, Canvas.height / 2);
+    this.position = position;
+    this.slowFac = 0.994;
   }
 
   update = function () {
@@ -22,7 +30,7 @@ class MoveAble {
     this.velocity.limit(this.topSpeed);
 
     if (this.inVector.y == 0) {
-      this.velocity.mult(0.994);
+      this.velocity.mult(this.slowFac);
     }
 
     this.position.x += this.velocity.x * deltaT;
