@@ -6,7 +6,8 @@ var end = false;
 var myShip = new Ship();
 
 var AsteroidList = [
-  new Asteroid(0, new Vector(0.1, 0.2), new Vector(100, 100), 50),
+  new Asteroid(0, new Vector(0.1, 0.0), new Vector(100, 100), 50),
+  new Asteroid(0, new Vector(-0.1, 0), new Vector(500, 100), 50),
 ];
 
 function setup() {
