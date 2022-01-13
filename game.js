@@ -1,3 +1,6 @@
+var Canvas = document.getElementById("VCan");
+var ctx = Canvas.getContext("2d");
+
 var myShip = new Ship();
 
 function setup() {
