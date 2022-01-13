@@ -5,7 +5,8 @@ class MoveAble {
     topSpeed,
     maxAccMag,
     velocity,
-    position
+    position,
+    minSpeed = 0
   ) {
     this.rotation = rotation;
     this.rotationSpeed = rotationSpeed;
@@ -16,6 +17,7 @@ class MoveAble {
     this.velocity = velocity;
     this.position = position;
     this.slowFac = 0.994;
+    this.minSpeed = minSpeed;
   }
 
   update = function () {
@@ -29,7 +31,7 @@ class MoveAble {
     this.velocity.add(this.acceleration);
     this.velocity.limit(this.topSpeed);
 
-    if (this.inVector.y == 0) {
+    if (this.inVector.y == 0 && this.velocity.mag() > this.minSpeed) {
       this.velocity.mult(this.slowFac);
     }
 

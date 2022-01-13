@@ -7,7 +7,7 @@ class Ship extends MoveAble {
     velocity = new Vector(0, 0),
     position = new Vector(Canvas.width / 2, Canvas.height / 2)
   ) {
-    super(rotation, rotationSpeed, topSpeed, maxAccMag, velocity, position);
+    super(rotation, rotationSpeed, topSpeed, maxAccMag, velocity, position, 0);
     this.laserArray = new Array();
   }
 
@@ -50,11 +50,19 @@ class Ship extends MoveAble {
       )
     );
   };
+
+  colission = function (asteroid) {
+    let dist = Math.sqrt(
+      Math.pow(this.position.x - asteroid.position.x, 2) +
+        Math.pow(this.position.y - asteroid.position.y, 2)
+    );
+    return dist < asteroid.size;
+  };
 }
 
 class Laser extends MoveAble {
   constructor(rotation, topSpeed, velocity, position) {
-    super(rotation, 0, topSpeed, 0, velocity, position);
+    super(rotation, 0, topSpeed, 0, velocity, position, 0);
     this.velocity.mult(this.topSpeed);
     this.slowFac = 1;
     this.age = 0;
@@ -79,5 +87,13 @@ class Laser extends MoveAble {
 
     // add age
     this.age += deltaT;
+  };
+
+  colission = function (asteroid) {
+    let dist = Math.sqrt(
+      Math.pow(this.position.x - asteroid.position.x, 2) +
+        Math.pow(this.position.y - asteroid.position.y, 2)
+    );
+    return dist < asteroid.size;
   };
 }

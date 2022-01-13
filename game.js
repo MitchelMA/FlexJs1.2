@@ -2,7 +2,10 @@ var Canvas = document.getElementById("VCan");
 var ctx = Canvas.getContext("2d");
 
 var myShip = new Ship();
-var myAst = new Asteroid(0, new Vector(1, 0.4), new Vector(100, 100), 50);
+
+var AsteroidList = [
+  new Asteroid(0, new Vector(0.1, 0.2), new Vector(100, 100), 50),
+];
 
 function setup() {
   window.requestAnimationFrame(draw);
@@ -25,13 +28,88 @@ function draw(time) {
   myShip.showMag();
   myShip.update();
 
-  myAst.show();
-  myAst.update();
+  for (let i = 0; i < AsteroidList.length; i++) {
+    if (myShip.colission(AsteroidList[i])) {
+      let shipVelSnap = new Vector(myShip.velocity.x, myShip.velocity.y);
+      let AstVelSnap = new Vector(
+        AsteroidList[i].velocity.x,
+        AsteroidList[i].velocity.y
+      );
+      shipVelSnap.mult(0.1);
+      AstVelSnap.mult(0.1);
+      AsteroidList[i].velocity.add(shipVelSnap);
+      myShip.velocity.sub(AstVelSnap);
+    }
+    console.log(myShip.colission(AsteroidList[i]));
+  }
+
+  for (let i = 0; i < AsteroidList.length; i++) {
+    AsteroidList[i].show();
+    AsteroidList[i].update();
+    if (AsteroidList[i].size < 10) {
+      // randomly create a new Asteroid when one gets broken.
+      if (0.7 < Math.random() && AsteroidList.length < 10) {
+        AsteroidList.push(
+          new Asteroid(
+            Math.random() * Math.PI,
+            new Vector(Math.random() * 0.4, Math.random() * 0.2),
+            new Vector(
+              Math.random() * Canvas.width,
+              Math.random() * Canvas.height
+            ),
+            25 + Math.random() * 50
+          )
+        );
+      }
+      AsteroidList.splice(i, 1);
+    }
+  }
 
   for (let i = 0; i < myShip.laserArray.length; i++) {
     myShip.laserArray[i].update();
     myShip.laserArray[i].show();
-    if (myShip.laserArray[i].age > Laser.maxAge) myShip.laserArray.splice(i, 1);
+    try {
+      for (let j = 0; j < AsteroidList.length; j++) {
+        console.log(myShip.laserArray[i].colission(AsteroidList[j]));
+        if (myShip.laserArray[i].colission(AsteroidList[j])) {
+          myShip.laserArray[i].velocity.mult(0.1);
+          AsteroidList[j].velocity.add(myShip.laserArray[i].velocity);
+          myShip.laserArray.splice(i, 1);
+          AsteroidList.push(
+            new Asteroid(
+              AsteroidList[j].rotation,
+              new Vector(
+                AsteroidList[j].velocity.x,
+                AsteroidList[j].velocity.y
+              ),
+              new Vector(
+                AsteroidList[j].position.x,
+                AsteroidList[j].position.y
+              ),
+              AsteroidList[j].size / 2
+            )
+          );
+          AsteroidList[j].velocity.mult(-1);
+          AsteroidList.push(
+            new Asteroid(
+              AsteroidList[j].rotation,
+              new Vector(
+                AsteroidList[j].velocity.x,
+                AsteroidList[j].velocity.y
+              ),
+              new Vector(
+                AsteroidList[j].position.x,
+                AsteroidList[j].position.y
+              ),
+              AsteroidList[j].size / 2
+            )
+          );
+          AsteroidList.splice(j, 1);
+        }
+      }
+      if (myShip.laserArray[i].age > Laser.maxAge)
+        myShip.laserArray.splice(i, 1);
+    } catch (e) {}
   }
 
   ctx.font = "16px Arial";

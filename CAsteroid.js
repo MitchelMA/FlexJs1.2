@@ -1,8 +1,9 @@
 class Asteroid extends MoveAble {
   constructor(rotation, velocity, position, size) {
-    super(rotation, 0.005, 0.1, 0, velocity, position);
+    super(rotation, 0.0004, 1.1, 0, velocity, position, 0.1);
     this.size = size;
-    this.slowFac = 1;
+    this.slowFac = 0.998;
+    this.inVector.x = 1;
   }
 
   show = function () {
@@ -35,6 +36,9 @@ class Asteroid extends MoveAble {
       ctx.stroke();
       ctx.fill();
     }
-    drawPent(this.position.x, this.position.y, this.size);
+    ctx.translate(this.position.x, this.position.y);
+    ctx.rotate(this.rotation);
+    drawPent(0, 0, this.size);
+    ctx.resetTransform();
   };
 }
