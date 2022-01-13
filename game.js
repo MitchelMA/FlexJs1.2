@@ -67,7 +67,7 @@ function draw(time) {
         win();
       }
       // randomly create a new Asteroid when one gets broken.
-      if (0.7 < Math.random() && AsteroidList.length < 10) {
+      if (0.5 < Math.random() && AsteroidList.length < 10) {
         AsteroidList.push(
           new Asteroid(
             Math.random() * Math.PI,
