@@ -2,6 +2,7 @@ var Canvas = document.getElementById("VCan");
 var ctx = Canvas.getContext("2d");
 
 var myShip = new Ship();
+var myAst = new Asteroid(0, new Vector(1, 0.4), new Vector(100, 100), 50);
 
 function setup() {
   window.requestAnimationFrame(draw);
@@ -23,6 +24,9 @@ function draw(time) {
   myShip.show();
   myShip.showMag();
   myShip.update();
+
+  myAst.show();
+  myAst.update();
 
   for (let i = 0; i < myShip.laserArray.length; i++) {
     myShip.laserArray[i].update();
