@@ -140,7 +140,7 @@ function draw(time) {
     }
   }
 
-  // teken de lesers
+  // teken de lasers
   for (let i = 0; i < myShip.laserArray.length; i++) {
     myShip.laserArray[i].update();
     myShip.laserArray[i].show();
@@ -150,7 +150,7 @@ function draw(time) {
         // check voor collision
         if (myShip.laserArray[i].collision(AsteroidList[j])) {
           // zet de velocity van de laser heel laag
-          myShip.laserArray[i].velocity.mult(0.1);
+          myShip.laserArray[i].velocity.mult(0.4);
           // voeg de velocity van de laser toe aan de Asteroid
           AsteroidList[j].velocity.add(myShip.laserArray[i].velocity);
           // verwijder de laster
