@@ -6,7 +6,7 @@ var end = false;
 var myShip = new Ship();
 
 var AsteroidList = [
-  new Asteroid(0, new Vector(0.1, 0.0), new Vector(100, 100), 50),
+  new Asteroid(0, new Vector(0.33, 0.3), new Vector(100, 100), 50),
   new Asteroid(0, new Vector(-0.1, 0), new Vector(500, 100), 50),
 ];
 
@@ -67,7 +67,7 @@ function draw(time) {
         win();
       }
       // randomly create a new Asteroid when one gets broken.
-      if (0.5 < Math.random() && AsteroidList.length < 10) {
+      if (0.5 < Math.random() && AsteroidList.length < 30) {
         AsteroidList.push(
           new Asteroid(
             Math.random() * Math.PI,
@@ -79,6 +79,35 @@ function draw(time) {
             25 + Math.random() * 50
           )
         );
+      }
+    }
+  }
+
+  for (let i = 0; i < AsteroidList.length; i++) {
+    for (let j = 0; j < AsteroidList.length; j++) {
+      if (i == j) continue;
+      if (
+        AsteroidList[i].colission(AsteroidList[j]) &&
+        AsteroidList[i].hitTimeout >= 400 &&
+        AsteroidList[j].hitTimeout >= 400
+      ) {
+        AsteroidList[i].hitTimeout = 0;
+        AsteroidList[j].hitTimeout = 0;
+        let snapOne = new Vector(
+          AsteroidList[i].velocity.x,
+          AsteroidList[i].velocity.y
+        );
+        let snapTwo = new Vector(
+          AsteroidList[j].velocity.x,
+          AsteroidList[j].velocity.y
+        );
+        AsteroidList[i].velocity.sub(snapOne);
+        AsteroidList[j].velocity.sub(snapTwo);
+        snapOne.mult(0.9);
+        snapTwo.mult(0.9);
+
+        AsteroidList[i].velocity.add(snapTwo);
+        AsteroidList[j].velocity.add(snapOne);
       }
     }
   }

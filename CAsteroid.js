@@ -4,9 +4,13 @@ class Asteroid extends MoveAble {
     this.size = size;
     this.slowFac = 0.998;
     this.inVector.x = 1;
+    this.hitTimeout = 400;
   }
 
   show = function () {
+    if (this.hitTimeout <= 400) {
+      this.hitTimeout += deltaT;
+    }
     function drawPent(x, y, size) {
       ctx.beginPath();
       ctx.moveTo(
