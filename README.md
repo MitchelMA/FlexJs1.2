@@ -9,4 +9,6 @@ Dit is Asteroids gemaakt in Javascript
 - je verliest score als je een Asteroïde raakt
 - je verdient score als je een Asteroïde volledig[^1] kapot hebt gemaakt
 
+live [link](http://32548.hosts1.ma-cloud.nl/Flex_per1-2/)
+
 [^1]: een Asteroïde is pas volledig kapot als hij verdwijnt en dus niet in tweeën splits.
