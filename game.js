@@ -68,7 +68,7 @@ function draw(time) {
 
       // multiply de snapshots
       shipVelSnap.mult(0.9);
-      AstVelSnap.mult(0.9);
+      AstVelSnap.mult(1);
 
       // en voeg ze toe
       AsteroidList[i].velocity.add(shipVelSnap);
