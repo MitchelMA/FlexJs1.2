@@ -45,4 +45,7 @@ class Vector {
   heading = function () {
     return Math.atan(this.y / this.x);
   };
+  copy = function () {
+    return new Vector(this.x, this.y);
+  };
 }

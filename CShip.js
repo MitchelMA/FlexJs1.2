@@ -56,7 +56,7 @@ class Ship extends MoveAble {
     );
   };
 
-  colission = function (asteroid) {
+  collision = function (asteroid) {
     let dist = Math.sqrt(
       Math.pow(this.position.x - asteroid.position.x, 2) +
         Math.pow(this.position.y - asteroid.position.y, 2)
@@ -95,7 +95,7 @@ class Laser extends MoveAble {
     this.age += deltaT;
   };
 
-  colission = function (asteroid) {
+  collision = function (asteroid) {
     let dist = Math.sqrt(
       Math.pow(this.position.x - asteroid.position.x, 2) +
         Math.pow(this.position.y - asteroid.position.y, 2)

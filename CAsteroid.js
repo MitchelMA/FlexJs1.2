@@ -45,7 +45,7 @@ class Asteroid extends MoveAble {
     drawPent(0, 0, this.size);
     ctx.resetTransform();
   };
-  colission = function (asteroid) {
+  collision = function (asteroid) {
     let dist = Math.sqrt(
       Math.pow(this.position.x - asteroid.position.x, 2) +
         Math.pow(this.position.y - asteroid.position.y, 2)
