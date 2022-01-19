@@ -13,6 +13,9 @@ var AsteroidList = [
   new Asteroid(0, new Vector(-0.1, 0), new Vector(500, 100), 50),
 ];
 
+// lijst met lasers
+var LaserArr = [];
+
 // setup function
 function setup() {
   window.requestAnimationFrame(draw);
@@ -51,9 +54,10 @@ function draw(time) {
         // set de timeout naar 0
         myShip.InvincibilityTimeout = 0;
         // minder de huidige score
-        myShip.score--;
+        myShip.lives--;
+        myShip.score = 0;
         // check of de score kleiner of gelijk is aan -1, zo ja, dan verlies je.
-        if (myShip.score <= -1) {
+        if (myShip.lives <= 0) {
           lose();
         }
       }
@@ -94,7 +98,7 @@ function draw(time) {
         win();
       }
       // als er eentje "kapot" gaat, zorg dan voor een willekeurige kans dat er een nieuwe bij komt
-      if (0.5 < Math.random() && AsteroidList.length < 30) {
+      if (0.8 < Math.random() && AsteroidList.length < 30) {
         AsteroidList.push(
           new Asteroid(
             Math.random() * Math.PI,
@@ -141,20 +145,20 @@ function draw(time) {
   }
 
   // teken de lasers
-  for (let i = 0; i < myShip.laserArray.length; i++) {
-    myShip.laserArray[i].update();
-    myShip.laserArray[i].show();
+  for (let i = 0; i < LaserArr.length; i++) {
+    LaserArr[i].update();
+    LaserArr[i].show();
     // check voor collision met de laser en Asteroids (dit moet in een try catch, omdat het zomaar iets uit de AsteroidList verwijderd)
     try {
       for (let j = 0; j < AsteroidList.length; j++) {
         // check voor collision
-        if (myShip.laserArray[i].collision(AsteroidList[j])) {
+        if (LaserArr[i].collision(AsteroidList[j])) {
           // zet de velocity van de laser heel laag
-          myShip.laserArray[i].velocity.mult(0.4);
+          LaserArr[i].velocity.mult(0.4);
           // voeg de velocity van de laser toe aan de Asteroid
-          AsteroidList[j].velocity.add(myShip.laserArray[i].velocity);
+          AsteroidList[j].velocity.add(LaserArr[i].velocity);
           // verwijder de laster
-          myShip.laserArray.splice(i, 1);
+          LaserArr.splice(i, 1);
 
           // maak twee kopiën van de asteroid, die de helft van de oorspronkelijke grootte hebben en allebei een andere kant op vliegen.
           AsteroidList.push(
@@ -179,8 +183,7 @@ function draw(time) {
         }
       }
       // verwijder een laser als hij zijn maximum "leeftijd" heeft berijkt
-      if (myShip.laserArray[i].age > Laser.maxAge)
-        myShip.laserArray.splice(i, 1);
+      if (LaserArr[i].age > Laser.maxAge) LaserArr.splice(i, 1);
     } catch (e) {}
   }
 
@@ -193,6 +196,7 @@ function draw(time) {
     50
   );
   ctx.fillText("score: " + myShip.score, 10, 80);
+  ctx.fillText("Lives: " + myShip.lives, 10, 110);
   oldT = time;
   if (!end) window.requestAnimationFrame(draw);
 }

@@ -8,8 +8,8 @@ class Ship extends MoveAble {
     position = new Vector(Canvas.width / 2, Canvas.height / 2)
   ) {
     super(rotation, rotationSpeed, topSpeed, maxAccMag, velocity, position, 0);
-    this.laserArray = new Array();
     this.score = 0;
+    this.lives = 3;
     this.InvincibilityTimeout = 400;
   }
 
@@ -45,8 +45,8 @@ class Ship extends MoveAble {
   };
 
   shoot = function () {
-    if (this.laserArray.length >= 3) return;
-    this.laserArray.push(
+    if (LaserArr.length >= 3) return;
+    LaserArr.push(
       new Laser(
         this.rotation,
         this.topSpeed * 1.1,
