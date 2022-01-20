@@ -164,7 +164,8 @@ function draw(time) {
           ExploArr.push(
             new Explosion(
               AsteroidList[j].position.x,
-              AsteroidList[j].position.y
+              AsteroidList[j].position.y,
+              AsteroidList[j].size * 3
             )
           );
           // verwijder de laster

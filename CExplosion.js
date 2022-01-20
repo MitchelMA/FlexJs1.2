@@ -1,7 +1,8 @@
 class Explosion {
-  constructor(x, y) {
+  constructor(x, y, size) {
     this.x = x;
     this.y = y;
+    this.size = size;
     this.sprite;
     this.loaded = false;
     let sprite = new Image();
@@ -26,10 +27,10 @@ class Explosion {
         this.row * this.frameSize,
         this.frameSize,
         this.frameSize,
-        this.x - this.frameSize / 2,
-        this.y - this.frameSize / 2,
-        this.frameSize,
-        this.frameSize
+        this.x - this.size / 2,
+        this.y - this.size / 2,
+        this.size,
+        this.size
       );
       this.curFrameTime += deltaT;
       if (this.curFrameTime > this.maxFrameTime) {
