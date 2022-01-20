@@ -16,6 +16,9 @@ var AsteroidList = [
 // lijst met lasers
 var LaserArr = [];
 
+// lijst met explosion
+var ExploArr = [];
+
 // setup function
 function setup() {
   window.requestAnimationFrame(draw);
@@ -157,9 +160,15 @@ function draw(time) {
           LaserArr[i].velocity.mult(0.4);
           // voeg de velocity van de laser toe aan de Asteroid
           AsteroidList[j].velocity.add(LaserArr[i].velocity);
+          // draw an explosion
+          ExploArr.push(
+            new Explosion(
+              AsteroidList[j].position.x,
+              AsteroidList[j].position.y
+            )
+          );
           // verwijder de laster
           LaserArr.splice(i, 1);
-
           // maak twee kopiën van de asteroid, die de helft van de oorspronkelijke grootte hebben en allebei een andere kant op vliegen.
           AsteroidList.push(
             new Asteroid(
@@ -185,6 +194,15 @@ function draw(time) {
       // verwijder een laser als hij zijn maximum "leeftijd" heeft berijkt
       if (LaserArr[i].age > Laser.maxAge) LaserArr.splice(i, 1);
     } catch (e) {}
+  }
+
+  // draw the explosions
+  for (let i = 0; i < ExploArr.length; i++) {
+    if (ExploArr[i].ended) {
+      ExploArr.splice(i, 1);
+      continue;
+    }
+    ExploArr[i].show();
   }
 
   // teken de info text zoals fps, direction en score.
