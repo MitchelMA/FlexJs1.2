@@ -18,6 +18,9 @@ var ExploArr = [];
 
 var restartBtn;
 
+var btnEndless;
+var endless = false;
+
 // setup function
 function setup() {
   Canvas.width = document.documentElement.clientWidth;
@@ -35,6 +38,7 @@ function setup() {
   ];
 
   restartBtn = new CButton(100, 100, 160, 50, "Opnieuw");
+  btnEndless = new CButton(0, 0, 250, 50, "Endless Mode");
 
   window.requestAnimationFrame(draw);
 }
@@ -114,7 +118,7 @@ function draw(time) {
     if (AsteroidList[i].size < 10) {
       AsteroidList.splice(i, 1);
       myShip.score += 0.5;
-      if (myShip.score >= 25) {
+      if (myShip.score >= 25 && endless == false) {
         win();
       }
       // als er eentje "kapot" gaat, zorg dan voor een willekeurige kans dat er een nieuwe bij komt
@@ -292,6 +296,7 @@ function win() {
       Canvas.height / 2
     );
 
+    // restart btn
     ctx.beginPath();
     ctx.fillStyle = "transparent";
     ctx.strokeStyle = "black";
@@ -300,6 +305,15 @@ function win() {
     restartBtn.displaying = true;
     restartBtn.show();
     ctx.closePath();
+
+    //endless mode btn
+    ctx.beginPath();
+    ctx.fillStyle = "transparent";
+    ctx.strokeStyle = "black";
+    btnEndless.centerX = Canvas.width / 2;
+    btnEndless.centerY = Canvas.height / 2 + 180;
+    btnEndless.displaying = true;
+    btnEndless.show();
   }, 300);
 }
 
@@ -328,7 +342,15 @@ function lose() {
 
 // check for button clicks
 document.addEventListener("click", (e) => {
+  // restart btn
   if (restartBtn.checkClick(e) === true) {
     setup();
+  }
+  // endless mode btn
+  if (btnEndless.checkClick(e) === true) {
+    end = false;
+    endless = true;
+    btnEndless.displaying = false;
+    window.requestAnimationFrame(draw);
   }
 });
