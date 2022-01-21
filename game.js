@@ -2,16 +2,13 @@ var Canvas = document.getElementById("VCan");
 var ctx = Canvas.getContext("2d");
 
 // variabel dat checkt of de game over is
-var end = false;
+var end;
 
 // spelersschip
-var myShip = new Ship();
+var myShip;
 
 // lijst met Asteroids
-var AsteroidList = [
-  new Asteroid(0, new Vector(0.33, 0.3), new Vector(100, 100), 50),
-  new Asteroid(0, new Vector(-0.1, 0), new Vector(500, 100), 50),
-];
+var AsteroidList = [];
 
 // lijst met lasers
 var LaserArr = [];
@@ -19,10 +16,26 @@ var LaserArr = [];
 // lijst met explosion
 var ExploArr = [];
 
+var restartBtn;
+
 // setup function
 function setup() {
   Canvas.width = document.documentElement.clientWidth;
   Canvas.height = document.documentElement.clientHeight;
+  end = false;
+  myShip = new Ship();
+
+  LaserArr = [];
+
+  ExploArr = [];
+
+  AsteroidList = [
+    new Asteroid(0, new Vector(0.33, 0.3), new Vector(100, 100), 50),
+    new Asteroid(0, new Vector(-0.1, 0), new Vector(500, 100), 50),
+  ];
+
+  restartBtn = new CButton(100, 100, 160, 50, "Opnieuw");
+
   window.requestAnimationFrame(draw);
 }
 
@@ -105,7 +118,7 @@ function draw(time) {
         win();
       }
       // als er eentje "kapot" gaat, zorg dan voor een willekeurige kans dat er een nieuwe bij komt
-      if (0.8 < Math.random() && AsteroidList.length < 30) {
+      if (0.3 < Math.random() && AsteroidList.length < 30) {
         AsteroidList.push(
           new Asteroid(
             Math.random() * Math.PI,
@@ -278,6 +291,15 @@ function win() {
       Canvas.width / 2,
       Canvas.height / 2
     );
+
+    ctx.beginPath();
+    ctx.fillStyle = "transparent";
+    ctx.strokeStyle = "black";
+    restartBtn.centerX = Canvas.width / 2;
+    restartBtn.centerY = Canvas.height / 2 + 90;
+    restartBtn.displaying = true;
+    restartBtn.show();
+    ctx.closePath();
   }, 300);
 }
 
@@ -295,5 +317,18 @@ function lose() {
       Canvas.width / 2,
       Canvas.height / 2
     );
+    restartBtn.centerX = Canvas.width / 2;
+    restartBtn.centerY = Canvas.height / 2 + 90;
+    ctx.strokeStyle = "black";
+    ctx.fillStyle = "transparent";
+    restartBtn.displaying = true;
+    restartBtn.show();
   }, 500);
 }
+
+// check for button clicks
+document.addEventListener("click", (e) => {
+  if (restartBtn.checkClick(e) === true) {
+    setup();
+  }
+});
