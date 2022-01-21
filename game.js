@@ -19,13 +19,14 @@ var ExploArr = [];
 var restartBtn;
 
 var btnEndless;
-var endless = false;
+var endless;
 
 // setup function
 function setup() {
   Canvas.width = document.documentElement.clientWidth;
   Canvas.height = document.documentElement.clientHeight;
   end = false;
+  endless = false;
   myShip = new Ship();
 
   LaserArr = [];
