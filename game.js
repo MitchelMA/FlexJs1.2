@@ -21,6 +21,8 @@ var ExploArr = [];
 
 // setup function
 function setup() {
+  Canvas.width = document.documentElement.clientWidth;
+  Canvas.height = document.documentElement.clientHeight;
   window.requestAnimationFrame(draw);
 }
 
@@ -31,6 +33,8 @@ var oldT = 0,
 
 // draw function (dit is de function die iedere frame gecalled wordt)
 function draw(time) {
+  Canvas.width = document.documentElement.clientWidth;
+  Canvas.height = document.documentElement.clientHeight;
   // fps en delta berekenen
   if (oldT != 0) {
     deltaT = time - oldT;
