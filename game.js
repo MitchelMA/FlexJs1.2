@@ -344,11 +344,11 @@ function lose() {
 // check for button clicks
 document.addEventListener("click", (e) => {
   // restart btn
-  if (restartBtn.checkClick(e) === true) {
+  if (restartBtn.checkClick(e)) {
     setup();
   }
   // endless mode btn
-  if (btnEndless.checkClick(e) === true) {
+  if (btnEndless.checkClick(e)) {
     end = false;
     endless = true;
     btnEndless.displaying = false;

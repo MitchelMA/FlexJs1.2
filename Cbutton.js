@@ -26,7 +26,7 @@ class CButton {
     ctx.closePath();
   };
   checkClick = function (event) {
-    if (!this.displaying) return;
+    if (!this.displaying) return false;
     return (
       event.clientX > this.centerX - this.width / 2 &&
       event.clientX < this.centerX + this.width / 2 &&
