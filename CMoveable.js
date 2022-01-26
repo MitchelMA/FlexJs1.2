@@ -23,10 +23,9 @@ class MoveAble {
   update = function () {
     this.rotation += this.rotationSpeed * this.inVector.x * deltaT;
 
-    this.acceleration.x = Math.cos(this.rotation) * this.inVector.y;
-    this.acceleration.y = Math.sin(this.rotation) * this.inVector.y;
+    this.acceleration.setByAngle(this.rotation);
 
-    this.acceleration.setMag(this.maxAccMag * deltaT);
+    this.acceleration.setMag(this.maxAccMag * deltaT * this.inVector.y);
 
     this.velocity.add(this.acceleration);
     this.velocity.limit(this.topSpeed);

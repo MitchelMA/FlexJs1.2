@@ -42,10 +42,11 @@ class Vector {
     this.x /= factor;
     this.y /= factor;
   };
-  heading = function () {
-    return Math.atan(this.y / this.x);
+  setByAngle = function (angle) {
+    this.x = Math.cos(angle);
+    this.y = Math.sin(angle);
+    return this;
   };
-  copy = function () {
-    return new Vector(this.x, this.y);
-  };
+  heading = () => Math.atan(this.y / this.x);
+  copy = () => new Vector(this.x, this.y);
 }
