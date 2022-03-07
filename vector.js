@@ -54,21 +54,14 @@ class Vector {
     // | SIN θ   COS θ | | Vy |
     // Waar θ = angle en V de Vector waarop deze function op werd geroepen
 
-    // bereken de dot-product van (COS θ, -SIN θ) * (Vx)
+    // bereken de dot-product van (COS θ, -SIN θ) * (Vx, Vy)
     let newX = Math.cos(angle) * this.x + -Math.sin(angle) * this.y;
 
-    // bereken de dot-product van (SIN θ, COS θ) * (Vy)
+    // bereken de dot-product van (SIN θ, COS θ) * (Vx, Vy)
     let newY = Math.sin(angle) * this.x + Math.cos(angle) * this.y;
 
-    // maak een kopie van de vector waar de function op was geroepen
-    let VP = this.copy();
-
-    // set de x en y
-    VP.x = newX;
-    VP.y = newY;
-
-    // return deze vector
-    return VP;
+    // maak een vector met de nieuwe x en y waardes, en return dezze
+    return new Vector(newX, newY);
   };
   heading = () => Math.atan2(this.y, this.x);
   copy = () => new Vector(this.x, this.y);
