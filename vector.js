@@ -47,6 +47,29 @@ class Vector {
     this.y = Math.sin(angle);
     return this;
   };
-  heading = () => Math.atan(this.y / this.x);
+
+  rotatedBy = function (angle) {
+    // deze function maakt gebruik van de volgende Matrix-transformatie:
+    // | COS θ  -SIN θ | | Vx |
+    // | SIN θ   COS θ | | Vy |
+    // Waar θ = angle en V de Vector waarop deze function op werd geroepen
+
+    // bereken de dot-product van (COS θ, -SIN θ) * (Vx)
+    let newX = Math.cos(angle) * this.x + -Math.sin(angle) * this.y;
+
+    // bereken de dot-product van (SIN θ, COS θ) * (Vy)
+    let newY = Math.sin(angle) * this.x + Math.cos(angle) * this.y;
+
+    // maak een kopie van de vector waar de function op was geroepen
+    let VP = this.copy();
+
+    // set de x en y
+    VP.x = newX;
+    VP.y = newY;
+
+    // return deze vector
+    return VP;
+  };
+  heading = () => Math.atan2(this.y, this.x);
   copy = () => new Vector(this.x, this.y);
 }
